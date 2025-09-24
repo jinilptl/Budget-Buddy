@@ -2,9 +2,9 @@ import { TrendingUp, TrendingDown, DollarSign } from 'lucide-react';
 
 export function SummaryCard({ title, amount, type, className = '' }) {
   const formatAmount = (amount) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-IN', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'INR',
     }).format(Math.abs(amount));
   };
 

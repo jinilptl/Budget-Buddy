@@ -181,13 +181,13 @@ const generatePDF = () => {
               { text: "Amount", style: "tableHeader", fillColor: "#4f81bd", color: "#fff" },
               { text: "Description", style: "tableHeader", fillColor: "#4f81bd", color: "#fff" },
             ],
-            ...filteredData.map((txn) => [
-              { text: formatDate(txn.transactionDate) },
-              { text: txn.category },
-              { text: txn.transactionType, color: txn.transactionType === "income" ? "green" : "red" },
-              { text: `₹${txn.amount}` },
-              { text: txn.description || "-" },
-            ]),
+              ...filteredData.map((txn) => [
+                { text: formatDate(txn.transactionDate) },
+                { text: txn.category },
+                { text: txn.transactionType, color: txn.transactionType === "income" ? "green" : "red" },
+                { text: `₹${txn.amount}` },
+                { text: txn.description || "-" },
+              ]),
           ],
         },
         layout: {
