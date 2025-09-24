@@ -1,0 +1,16 @@
+# Node.js / Backend
+backend/node_modules/
+backend/.env
+backend/dist/
+backend/build/
+
+# React / Frontend
+client/node_modules/
+client/build/
+
+# OS / Editor files
+*.log
+*.tmp
+.DS_Store
+.vscode/
+.idea/
