@@ -31,7 +31,7 @@ export function TransactionList({ transactions = [], onDeleteTransaction, histor
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
       <h2 className="text-xl font-bold text-gray-900 mb-4">
-        {history ? "Transaction History" : "Recent Transactions"}
+        {history ? "All Transactions" : "Recent Transactions ( last 24 hrs )"}
       </h2>
 
       {/* Desktop Table View */}
