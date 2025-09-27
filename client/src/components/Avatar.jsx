@@ -15,7 +15,7 @@ const Avatar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const { user } = useContext(AuthContext);
-  console.log("user in avatar:", user);
+ 
 
   let name = user?.name || "Guest";
   // pick gradient based on first letter

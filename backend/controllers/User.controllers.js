@@ -169,3 +169,68 @@ export const resetPassword = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, {}, "Password reset successful"));
 });
+
+
+export const changePassword = AsyncHandler(async (req, res) => {
+  console.log("change password controller called");
+  
+  const userId = req.user?.id; // from verifyJWT
+  const { oldPassword, newPassword } = req.body;
+
+   console.log(
+    oldPassword, newPassword, userId
+   );
+   
+  if (!oldPassword || !newPassword) {
+    throw new ApiError(400, "Old password and new password are required");
+  }
+
+  const user = await UserModel.findById(userId).select("+password");
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  // Compare old password
+  const isMatch = await bcrypt.compare(oldPassword, user.password);
+  if (!isMatch) {
+    throw new ApiError(401, "Old password is incorrect");
+  }
+
+  // Hash and update password
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(newPassword, salt);
+
+  await user.save();
+
+  // Styled Email
+  const message = `
+    <div style="font-family: Arial, sans-serif; padding:20px; background:#f4f4f4;">
+      <div style="max-width:600px;margin:auto;background:white;border-radius:10px;overflow:hidden;box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+        <div style="background:linear-gradient(90deg,#22c55e,#3b82f6);padding:20px;text-align:center;color:white;">
+          <h1 style="margin:0;">BudgetBuddy 🪙</h1>
+        </div>
+        <div style="padding:20px;">
+          <p>Hi <b>${user.name}</b>,</p>
+          <p>This is to confirm that the password for your <b>BudgetBuddy</b> account was changed successfully.</p>
+          <p>If you did not perform this action, please contact our support team immediately.</p>
+          <p style="margin-top:30px;">Best Regards,<br/>BudgetBuddy Team</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "BudgetBuddy Password Changed Successfully",
+      message,
+    });
+  } catch (error) {
+    console.error("Email Error:", error.response ? error.response.body : error);
+    // We won’t rollback password if email fails (since password change is primary)
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password changed successfully"));
+});

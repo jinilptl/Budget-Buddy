@@ -33,7 +33,7 @@ const TransactionContextProvider = ({ children }) => {
       }
     }
    if(!token){
-    alert("Please login to continue");
+    // alert("Please login to continue in transaction context");
     return
    }
     fetchTransactions();
@@ -50,12 +50,12 @@ const TransactionContextProvider = ({ children }) => {
       throw error;
     }
   }
-console.log("all transactions in context ", Transactions);
+// console.log("all transactions in context ", Transactions);
 
   async function updateTransaction(formData) {
     try {
       const response = await updateTransactionApi(formData);
-      console.log("response in context of editing ",response);
+      // console.log("response in context of editing ",response);
       
       return response;
     } catch (error) {
@@ -66,7 +66,7 @@ console.log("all transactions in context ", Transactions);
   async function deleteTransaction(id) {
     try {
       const response = await deleteTransactionApi(id);
-      console.log("response in context of deleting ",response);
+      // console.log("response in context of deleting ",response);
 
       return response;
     } catch (error) {

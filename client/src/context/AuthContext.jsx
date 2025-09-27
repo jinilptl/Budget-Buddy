@@ -10,7 +10,7 @@ const AuthContextProvider = ({ children }) => {
   // for debugging
   useEffect(() => {
     if (user) {
-      console.log("✅ User updated:", user);
+      
       localStorage.setItem("user", JSON.stringify(user));
     }
  

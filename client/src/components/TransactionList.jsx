@@ -18,7 +18,7 @@ function formatDate(dateString) {
 
 export function TransactionList({ transactions = [], onDeleteTransaction, history = false }) {
   const navigate = useNavigate();
-console.log("Transactions in TransactionList:", transactions);
+// console.log("Transactions in TransactionList:", transactions);
 
   if (transactions.length === 0) {
     return (

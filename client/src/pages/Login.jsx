@@ -26,14 +26,14 @@ export default function Login() {
     e.preventDefault();
     // Handle login logic here
 
-    console.log("login data ", formData);
+    // console.log("login data ", formData);
 
     const response = await loginUser(formData);
 
-    console.log("response is ", response);
+    // console.log("response is ", response);
 
     if (response.status === 200) {
-      console.log("data is ", response.data.data);
+      // console.log("data is ", response.data.data);
       let data = response.data.data;
 
       let token = data.token;

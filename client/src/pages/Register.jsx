@@ -38,9 +38,9 @@ export default function Register() {
     setLoading(true);
     try {
       const response = await registerUser(formData);
-      console.log(response);
+      // console.log(response);
       if(response.status===201){
-        console.log(response.data.data);
+        // console.log(response.data.data);
         let data=response.data.data;
         setUser(data.user);
         navigate("/");

@@ -42,7 +42,7 @@ export default function Analytics() {
       if (t.transactionType === "income") {
         map[t.category] = (map[t.category] || 0) + Number(t.amount);
       }
-      console.log("map is ", map);
+      // console.log("map is ", map);
       
     });
     return Object.entries(map).map(([name, value]) => ({ name, value }));

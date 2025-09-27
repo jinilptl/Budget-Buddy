@@ -69,10 +69,10 @@ export default function AddTransaction({ isEdit }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isEdit) {
-      console.log("Editing transaction:", formData);
+      // console.log("Editing transaction:", formData);
       const response = await updateTransaction(formData)
 
-      console.log(response.data.data);
+      // console.log(response.data.data);
       if (response.status === 200) {
         let data=response.data.data;
         setTransactions((prev)=>{
