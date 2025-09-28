@@ -1,22 +1,23 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast'; // ✅ import toast
 
 const Logout = () => {
-const navigate = useNavigate();
+  const navigate = useNavigate();
+
   async function handleLogout() {
     // Perform logout logic here
-    localStorage.removeItem('token')
+    localStorage.removeItem('token');
 
-    alert("Logged out successfully");
-    navigate('/')
+    toast.success("Logged out successfully ✅"); // ✅ toast instead of alert
+    navigate('/');
   }
-  useEffect(()=>{
+
+  useEffect(() => {
     handleLogout();
-  },[])
+  }, []);
 
-  return (
-    <div>Logout</div>
-  )
-}
+  return <div>Logging out...</div>;
+};
 
-export default Logout
+export default Logout;

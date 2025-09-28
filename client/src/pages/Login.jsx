@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
-import { Mail, Lock, Eye, EyeOff, PiggyBank } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import IconOnly from "../components/logo/IconOnly";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const { loginUser, setUser } = useContext(AuthContext);
-
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -17,45 +17,61 @@ export default function Login() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => {
-      return { ...prev, [name]: value };
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    // Handle login logic here
+  e.preventDefault();
 
-    // console.log("login data ", formData);
-
+  try {
     const response = await loginUser(formData);
 
-    // console.log("response is ", response);
-
     if (response.status === 200) {
-      // console.log("data is ", response.data.data);
       let data = response.data.data;
-
       let token = data.token;
-      console.log("logion data", data);
-      
+
       setUser(data.user);
       localStorage.setItem("token", JSON.stringify(token));
-      navigate("/home");
+
+      // ✅ Show toast and auto-hide after 2 seconds
+      toast.success("Logged in successfully! 🎉", { duration: 2000 });
+
+      // ✅ Delay navigation so toast is visible
+      setTimeout(() => {
+        navigate("/home");
+      }, 2000);
+    } else {
+      toast.error("Login failed. Please check your credentials.", { duration: 3000 });
     }
-  };
+  } catch (err) {
+    console.log(err.response?.data?.message);
+    toast.error(err.response?.data?.message || "Something went wrong. Try again! ❌", { duration: 3000 });
+    console.error(err);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 px-6 py-8 flex flex-col justify-center">
+      {/* ✅ Global Toaster */}
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          style: {
+            background: "#333",
+            color: "#fff",
+            fontSize: "14px",
+            padding: "10px 16px",
+            borderRadius: "12px",
+            maxWidth: "90%",
+          },
+        }}
+      />
+
       <div className="max-w-md mx-auto w-full opacity-100 translate-y-0">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            {/* <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-full p-3">
-              <PiggyBank className="w-8 h-8 text-white" />
-              
-            </div> */}
-            <IconOnly size="small"/>
+            <IconOnly size="small" />
           </div>
           <h1 className="text-2xl font-bold text-gray-800 mb-2">
             Welcome Back!
@@ -67,11 +83,7 @@ export default function Login() {
 
         {/* Login Form */}
         <div className="bg-white rounded-lg shadow-lg border-0">
-          <form
-            onSubmit={(e) => {
-              handleSubmit(e);
-            }}
-          >
+          <form onSubmit={handleSubmit}>
             <div className="p-6 pb-4">
               <h2 className="text-xl font-semibold text-center">Sign In</h2>
             </div>
@@ -139,16 +151,6 @@ export default function Login() {
                     </button>
                   </div>
                 </div>
-
-                {/* Forgot Password
-                <div className="text-right">
-                  <button
-                    type="button"
-                    className="text-sm text-green-600 hover:underline"
-                  >
-                    Forgot Password?
-                  </button>
-                </div> */}
 
                 {/* Submit Button */}
                 <button

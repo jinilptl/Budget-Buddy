@@ -2,12 +2,12 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Home from "./pages/Home";
+
 import ProtectedWrapper from "./pages/ProtectedWrapper";
 import PublicWrapper from "./components/Publicwrapper";
 import Logout from "./pages/Logout";
 import AddTransaction from "./pages/AddTransaction";
-import { MainApp } from "./pages/OutletPage";
+import { MainApp } from "./pages/MainApp";
 import { Dashboard } from "./pages/Dashboard";
 import History from "./pages/History";
 import Analytics from "./pages/Analytics/Analytics";

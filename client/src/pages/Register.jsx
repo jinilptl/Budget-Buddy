@@ -1,15 +1,15 @@
 import React, { useState, useContext } from "react";
-import { Mail, Lock, User, Eye, EyeOff, PiggyBank } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext"; // adjust path
+import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
+import { data, Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext"; 
 import IconOnly from "../components/logo/IconOnly";
+import { toast } from "react-hot-toast"; // ✅ Only toast import
 
 export default function Register() {
   const navigate = useNavigate();
-  const { registerUser,setUser } = useContext(AuthContext);
+  const { registerUser, setUser } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = useState(false);
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -19,35 +19,39 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
+      toast.error("Passwords do not match ❌"); // ✅ Toast
       return;
     }
 
     setLoading(true);
     try {
       const response = await registerUser(formData);
-      // console.log(response);
-      if(response.status===201){
-        // console.log(response.data.data);
-        let data=response.data.data;
+
+      if (response.status === 201) {
+        let data = response.data.data;
         setUser(data.user);
+        toast.success("Account created successfully! 🎉"); // ✅ Toast
         navigate("/");
+      } else {
+        toast.error("Registration failed. Try again."); // ✅ fallback
       }
-      
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      console.log(err.response?.data?.message);
+
+      const message = err.response?.data?.message || "Registration failed";
+      setError(message);
+      toast.error(message + " ❌"); // ✅ Toast
     } finally {
       setLoading(false);
     }
@@ -61,7 +65,6 @@ export default function Register() {
           <div className="flex justify-center mb-4">
             <IconOnly size="small"/>
           </div>
-          
           <h1 className="text-2xl font-bold text-gray-800 mb-2">
             Join Budget Buddy
           </h1>
@@ -76,19 +79,14 @@ export default function Register() {
             </h2>
           </div>
           <div className="p-6 pt-0">
-            {/* form start */}
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Error message */}
               {error && (
                 <div className="text-red-600 text-sm text-center">{error}</div>
               )}
 
               {/* Name Field */}
               <div className="space-y-2">
-                <label
-                  htmlFor="name"
-                  className="text-sm font-medium leading-none"
-                >
+                <label htmlFor="name" className="text-sm font-medium leading-none">
                   Full Name
                 </label>
                 <div className="relative">
@@ -109,10 +107,7 @@ export default function Register() {
 
               {/* Email Field */}
               <div className="space-y-2">
-                <label
-                  htmlFor="email"
-                  className="text-sm font-medium leading-none"
-                >
+                <label htmlFor="email" className="text-sm font-medium leading-none">
                   Email Address
                 </label>
                 <div className="relative">
@@ -133,10 +128,7 @@ export default function Register() {
 
               {/* Password Field */}
               <div className="space-y-2">
-                <label
-                  htmlFor="password"
-                  className="text-sm font-medium leading-none"
-                >
+                <label htmlFor="password" className="text-sm font-medium leading-none">
                   Password
                 </label>
                 <div className="relative">
@@ -157,21 +149,14 @@ export default function Register() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
                   >
-                    {showPassword ? (
-                      <EyeOff className="w-5 h-5" />
-                    ) : (
-                      <Eye className="w-5 h-5" />
-                    )}
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
               </div>
 
               {/* Confirm Password */}
               <div className="space-y-2">
-                <label
-                  htmlFor="confirmPassword"
-                  className="text-sm font-medium leading-none"
-                >
+                <label htmlFor="confirmPassword" className="text-sm font-medium leading-none">
                   Confirm Password
                 </label>
                 <div className="relative">

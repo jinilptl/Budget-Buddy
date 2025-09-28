@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { TransactionContext } from "../context/TransactionContext.jsx";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext.jsx";
+import { toast } from "react-hot-toast"; // ✅ Toast import
 
 export function Dashboard() {
   const [totalIncome, setTotalIncome] = useState(0);
@@ -13,14 +14,13 @@ export function Dashboard() {
   const [balance, setBalance] = useState(0);
   const [latestTransactions, setLatestTransactions] = useState([]);
   const [motivation, setMotivation] = useState("");
+  const [time, setTime] = useState(new Date());
 
   const { deleteTransaction, setTransactions, getSummery, Transactions } =
     useContext(TransactionContext);
 
   const { user } = useContext(AuthContext);
-    const [time, setTime] = useState(new Date());
 
-  // ✅ Motivation Tips
   const tips = [
     "💡 Track every small expense, it adds up over time!",
     "🔥 You're doing great! Keep your savings consistent.",
@@ -29,15 +29,13 @@ export function Dashboard() {
     "🚀 Small steps lead to big financial goals!",
   ];
 
-    useEffect(() => {
+  useEffect(() => {
     const timer = setInterval(() => {
       setTime(new Date());
     }, 1000);
-
-    return () => clearInterval(timer); // cleanup
+    return () => clearInterval(timer);
   }, []);
 
-  // ✅ Greeting function
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) return "Good Morning";
@@ -45,7 +43,6 @@ export function Dashboard() {
     return "Good Evening";
   };
 
-  // ✅ Format today's date
   const formatDate = (date) => {
     return date.toLocaleDateString("en-US", {
       day: "numeric", month: "long", year: "numeric" 
@@ -53,17 +50,11 @@ export function Dashboard() {
   };
 
   const showDay = (date) => {
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
-    });
+    return date.toLocaleDateString("en-US", { weekday: "long" });
   };
 
-   const formatTime = (date) =>
-    date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
+  const formatTime = (date) =>
+    date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 
   // ✅ Fetch latest 24h transactions
   async function fetchLatestTransactions() {
@@ -81,7 +72,10 @@ export function Dashboard() {
         setLatestTransactions(res.data.data.data);
       }
     } catch (error) {
+      console.log(error?.response?.data?.message);
+      
       console.error("Error fetching latest transactions", error);
+      toast.error(error?.response?.data?.message || "Failed to fetch latest transactions ❌"); // ✅ Toast
     }
   }
 
@@ -97,6 +91,7 @@ export function Dashboard() {
       }
     } catch (error) {
       console.error("Error fetching summary", error);
+      toast.error("Failed to fetch summary ❌"); // ✅ Toast
     }
   }
 
@@ -114,51 +109,42 @@ export function Dashboard() {
       if (res.status === 200) {
         setTransactions((prev) => prev.filter((tx) => tx._id !== id));
         fetchLatestTransactions(); // refresh
+        toast.success("Transaction deleted successfully ✅"); // ✅ Toast
       }
     } catch (error) {
       console.error("Error deleting transaction", error);
+      toast.error("Failed to delete transaction ❌"); // ✅ Toast
     }
   }
 
   useEffect(() => {
     fetchSummary();
     fetchLatestTransactions();
-    // Set random tip
     setMotivation(tips[Math.floor(Math.random() * tips.length)]);
   }, [Transactions]);
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* ✅ Greeting Box */}
-          <div className="mb-8 p-6 rounded-2xl md:w-[50%] bg-gradient-to-r from-emerald-500 to-blue-500 text-white shadow-lg">
-      <h2 className="text-2xl font-bold">
-        {getGreeting()},{" "}
-        <span className="capitalize">{user?.name || "User"} 👋</span>
-      </h2>
+        {/* Greeting Box */}
+        <div className="mb-8 p-6 rounded-2xl md:w-[50%] bg-gradient-to-r from-emerald-500 to-blue-500 text-white shadow-lg">
+          <h2 className="text-2xl font-bold">
+            {getGreeting()}, <span className="capitalize">{user?.name || "User"} 👋</span>
+          </h2>
+          <p className="text-lg font-semibold">{showDay(time)}</p>
+          <p className="text-sm opacity-90">{formatDate(time)}</p>
+          <p className="text-sm opacity-80 mt-1">{formatTime(time)}</p>
+        </div>
 
-      <p className="text-lg font-semibold">{showDay(time)}</p>
-      <p className="text-sm opacity-90">{formatDate(time)}</p>
-      <p className="text-sm opacity-80 mt-1">{formatTime(time)}</p>
-    </div>
-
-        {/* ✅ Motivation Tip */}
+        {/* Motivation Tip */}
         <div className="mb-8 p-4 rounded-lg bg-yellow-100 text-yellow-800 shadow-sm text-center font-medium">
           {motivation}
         </div>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <SummaryCard
-            title="Total Income"
-            amount={totalIncome}
-            type="income"
-          />
-          <SummaryCard
-            title="Total Expenses"
-            amount={totalExpense}
-            type="expense"
-          />
+          <SummaryCard title="Total Income" amount={totalIncome} type="income" />
+          <SummaryCard title="Total Expenses" amount={totalExpense} type="expense" />
           <SummaryCard title="Balance" amount={balance} type="balance" />
         </div>
 

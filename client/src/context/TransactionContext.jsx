@@ -4,6 +4,7 @@ import { getSummeryApi } from "../services/Transaction/getSummeryService";
 import { getAllTransactionsApi } from "../services/Transaction/getAllTransactionsService";
 import { updateTransactionApi } from "../services/Transaction/updateTransactionApiService";
 import { deleteTransactionApi } from "../services/Transaction/deleteTransactionService";
+import toast from "react-hot-toast"; // <- toast import
 
 export const TransactionContext = createContext();
 
@@ -16,14 +17,15 @@ const TransactionContextProvider = ({ children }) => {
       if (response) {
         return response;
       } else {
-        alert("Failed to fetch all transactions in context");
+        toast.error("❌ Failed to fetch all transactions in context");
       }
     } catch (error) {
+      toast.error("❌ Error fetching transactions");
       throw error;
     }
   }
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   useEffect(() => {
     async function fetchTransactions() {
       const response = await getAllTransactions();
@@ -32,33 +34,31 @@ const TransactionContextProvider = ({ children }) => {
         setTransactions(data.allTransactions);
       }
     }
-   if(!token){
-    // alert("Please login to continue in transaction context");
-    return
-   }
+    if (!token) {
+      // toast.error("Please login to continue in transaction context");
+      return;
+    }
     fetchTransactions();
-
-    
-    
   }, []);
 
   async function addTransaction(formData) {
     try {
       const response = await addTransactionApi(formData);
+      toast.success("✅ Transaction added successfully");
       return response;
     } catch (error) {
+      toast.error(error.response?.data?.message || "❌ Failed to add transaction");
       throw error;
     }
   }
-// console.log("all transactions in context ", Transactions);
 
   async function updateTransaction(formData) {
     try {
       const response = await updateTransactionApi(formData);
-      // console.log("response in context of editing ",response);
-      
+      toast.success("✅ Transaction updated successfully");
       return response;
     } catch (error) {
+      toast.error(error.response?.data?.message || "❌ Failed to update transaction");
       throw error;
     }
   }
@@ -66,10 +66,10 @@ const TransactionContextProvider = ({ children }) => {
   async function deleteTransaction(id) {
     try {
       const response = await deleteTransactionApi(id);
-      // console.log("response in context of deleting ",response);
-
+      toast.success("✅ Transaction deleted successfully");
       return response;
     } catch (error) {
+      toast.error(error.response?.data?.message || "❌ Failed to delete transaction");
       throw error;
     }
   }
@@ -80,14 +80,22 @@ const TransactionContextProvider = ({ children }) => {
       if (response) {
         return response;
       } else {
-        alert("Failed to fetch summary in context");
+        toast.error("❌ Failed to fetch summary in context");
       }
     } catch (error) {
+      toast.error("❌ Error fetching summary");
       throw error;
     }
   }
 
-  let TransactionValue = { addTransaction, getSummery, Transactions ,setTransactions,updateTransaction,deleteTransaction};
+  let TransactionValue = {
+    addTransaction,
+    getSummery,
+    Transactions,
+    setTransactions,
+    updateTransaction,
+    deleteTransaction,
+  };
 
   return (
     <TransactionContext.Provider value={TransactionValue}>

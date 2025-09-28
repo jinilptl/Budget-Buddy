@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import ShowSuccess from "../components/ShowSuccess";
 import { data, useNavigate, useParams } from "react-router-dom";
 import { TransactionContext } from "../context/TransactionContext";
+import { toast } from "react-hot-toast"; 
 
 export default function AddTransaction({ isEdit }) {
   const { addTransaction, setTransactions, Transactions,updateTransaction } =
@@ -67,38 +68,33 @@ export default function AddTransaction({ isEdit }) {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  try {
     if (isEdit) {
-      // console.log("Editing transaction:", formData);
-      const response = await updateTransaction(formData)
-
-      // console.log(response.data.data);
+      const response = await updateTransaction(formData);
       if (response.status === 200) {
-        let data=response.data.data;
-        setTransactions((prev)=>{
-          return prev.map((transaction)=>{
-            if(transaction._id===data._id){
-              return data
-            }else{
-              return transaction
-            }
-          })
-        })
-       handleSuccess();
-
+        let data = response.data.data;
+        setTransactions((prev) =>
+          prev.map((transaction) => (transaction._id === data._id ? data : transaction))
+        );
+        toast.success("Transaction updated successfully ✅"); // ✅ Toast
+        handleSuccess();
       }
-      
-              
-      // update transaction call here (not implemented in your code yet)
     } else {
       const response = await addTransaction(formData);
-
       if (response.status === 201) {
         setTransactions((prev) => [response.data.data, ...prev]);
+        toast.success("Transaction added successfully ✅"); // ✅ Toast
         handleSuccess();
       }
     }
-  };
+  } catch (error) {
+    console.error("Transaction error:", error);
+    toast.error(
+      error.response?.data?.message || "Something went wrong ❌"
+    ); // ✅ Toast
+  }
+};
 
   /** ---------- Categories ---------- **/
   const expenseCategories = [
