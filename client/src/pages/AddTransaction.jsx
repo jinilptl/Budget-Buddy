@@ -64,7 +64,7 @@ export default function AddTransaction({ isEdit }) {
   };
 
   const goBack = () => {
-    navigate("/home/main");
+    navigate(-1);
   };
 
   const handleSubmit = async (e) => {
@@ -266,6 +266,7 @@ export default function AddTransaction({ isEdit }) {
                 <input
                   type="date"
                   name="transactionDate"
+                  max={new Date().toISOString().split("T")[0]}
                   onChange={handleChange}
                   value={formData.transactionDate}
                   className="pl-10 h-10 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
