@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { data, Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext"; 
+import { AuthContext } from "../context/AuthContext";
 import IconOnly from "../components/logo/IconOnly";
 import { toast } from "react-hot-toast"; // ✅ Only toast import
 
@@ -61,11 +61,11 @@ export default function Register() {
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 px-6 py-8 flex flex-col justify-center">
       <div className="max-w-md mx-auto w-full opacity-100 translate-y-0">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <IconOnly size="small"/>
+        <div className="text-center mb-4">
+          <div className="flex justify-center mb-3">
+            <IconOnly size="small" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">
+          <h1 className="text-2xl font-bold text-gray-800 mb-1">
             Join Budget Buddy
           </h1>
           <p className="text-gray-600">Create your account to get started</p>
@@ -73,7 +73,7 @@ export default function Register() {
 
         {/* Signup Form */}
         <div className="bg-white rounded-lg shadow-lg border-0">
-          <div className="p-6 pb-4">
+          <div className="p-6 pb-2 pt-3">
             <h2 className="text-xl font-semibold text-center">
               Create Account
             </h2>
@@ -86,7 +86,10 @@ export default function Register() {
 
               {/* Name Field */}
               <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-medium leading-none">
+                <label
+                  htmlFor="name"
+                  className="text-sm font-medium leading-none"
+                >
                   Full Name
                 </label>
                 <div className="relative">
@@ -107,7 +110,10 @@ export default function Register() {
 
               {/* Email Field */}
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium leading-none">
+                <label
+                  htmlFor="email"
+                  className="text-sm font-medium leading-none"
+                >
                   Email Address
                 </label>
                 <div className="relative">
@@ -128,7 +134,10 @@ export default function Register() {
 
               {/* Password Field */}
               <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium leading-none">
+                <label
+                  htmlFor="password"
+                  className="text-sm font-medium leading-none"
+                >
                   Password
                 </label>
                 <div className="relative">
@@ -149,14 +158,21 @@ export default function Register() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
               </div>
 
               {/* Confirm Password */}
               <div className="space-y-2">
-                <label htmlFor="confirmPassword" className="text-sm font-medium leading-none">
+                <label
+                  htmlFor="confirmPassword"
+                  className="text-sm font-medium leading-none"
+                >
                   Confirm Password
                 </label>
                 <div className="relative">
@@ -183,10 +199,7 @@ export default function Register() {
                   required
                   className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
                 />
-                <label
-                  htmlFor="terms"
-                  className="text-sm text-gray-600"
-                >
+                <label htmlFor="terms" className="text-sm text-gray-600">
                   I agree to the{" "}
                   <span className="text-green-600 underline">
                     Terms of Service
@@ -220,8 +233,19 @@ export default function Register() {
                 </Link>
               </p>
             </div>
+          
           </div>
+           
         </div>
+        <footer class="w-full mt-5">
+          <p class="text-center text-gray-500 text-sm md:text-base">
+            Designed & Developed by{" "}
+            <span class="font-semibold text-gray-800">Jinil Patel</span>
+          </p>
+          <p class="text-center text-gray-400 text-xs md:text-sm mt-1">
+            © 2025 All Rights Reserved
+          </p>
+        </footer>
       </div>
     </div>
   );

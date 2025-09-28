@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LogOut, User } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 
@@ -15,13 +15,25 @@ const Avatar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
  
+console.log("user name ",user?.name);
 
-  let name = user?.name || "Guest";
+  let name = user?.name?.trim() || "Guest";
   // pick gradient based on first letter
   const colorIndex = (name.charCodeAt(0) + name.length) % colors.length;
   const gradient = colors[colorIndex];
   const char = name.charAt(0).toUpperCase();
+  
+
+   function logoutNavigate() {
+    if (confirm("are you sure you want to logout?")) {
+      
+      
+      navigate("/logout");
+    }
+  }
+  
 
   // close menu when clicking outside
   useEffect(() => {
@@ -54,23 +66,23 @@ const Avatar = () => {
           onMouseLeave={() => setIsOpen(false)}
         >
           <Link
-            to="/profile"
+            to="/home/profile"
             className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
             onClick={() => setIsOpen(false)}
           >
             <User className="w-4 h-4" />
             Profile
           </Link>
-          <Link
+          <button
             onClick={() => {
               setIsOpen(false);
-              alert("Logout clicked"); // replace with logout logic
+              logoutNavigate() // replace with logout logic
             }}
             className="w-full text-left flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
           >
             <LogOut className="w-4 h-4" />
             Logout
-          </Link>
+          </button>
         </div>
       )}
     </div>

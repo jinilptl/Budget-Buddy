@@ -32,7 +32,7 @@ const ProfilePage = () => {
       <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-6 text-center">
         {/* Avatar */}
         <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-r from-emerald-500 to-blue-500 flex items-center justify-center text-white text-3xl font-bold shadow-md">
-          {getInitial(user?.name)}
+          {getInitial(user?.name?.trim())}
         </div>
 
         {/* Name */}
@@ -84,7 +84,20 @@ const ProfilePage = () => {
             Logout
           </button>
         </div>
+        
+
+<footer class="w-full py-4 mt-8">
+  <p class="text-center text-gray-500 text-sm md:text-base">
+    Designed & Developed by <span class="font-semibold text-gray-800">Jinil Patel</span>
+  </p>
+  <p class="text-center text-gray-400 text-xs md:text-sm mt-1">
+    © 2025 All Rights Reserved
+  </p>
+</footer>
+
+
       </div>
+      
 
       {/* Modal */}
       <PasswordModal
@@ -96,6 +109,7 @@ const ProfilePage = () => {
         }}
       />
     </div>
+    
   );
 };
 

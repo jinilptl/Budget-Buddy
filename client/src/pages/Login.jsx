@@ -21,34 +21,39 @@ export default function Login() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const response = await loginUser(formData);
+    try {
+      const response = await loginUser(formData);
 
-    if (response.status === 200) {
-      let data = response.data.data;
-      let token = data.token;
+      if (response.status === 200) {
+        let data = response.data.data;
+        let token = data.token;
 
-      setUser(data.user);
-      localStorage.setItem("token", JSON.stringify(token));
+        setUser(data.user);
+        localStorage.setItem("token", JSON.stringify(token));
 
-      // ✅ Show toast and auto-hide after 2 seconds
-      toast.success("Logged in successfully! 🎉", { duration: 2000 });
+        // ✅ Show toast and auto-hide after 2 seconds
+        toast.success("Logged in successfully! 🎉", { duration: 2000 });
 
-      // ✅ Delay navigation so toast is visible
-      setTimeout(() => {
-        navigate("/home");
-      }, 2000);
-    } else {
-      toast.error("Login failed. Please check your credentials.", { duration: 3000 });
+        // ✅ Delay navigation so toast is visible
+        setTimeout(() => {
+          navigate("/home");
+        }, 2000);
+      } else {
+        toast.error("Login failed. Please check your credentials.", {
+          duration: 3000,
+        });
+      }
+    } catch (err) {
+      console.log(err.response?.data?.message);
+      toast.error(
+        err.response?.data?.message || "Something went wrong. Try again! ❌",
+        { duration: 3000 }
+      );
+      console.error(err);
     }
-  } catch (err) {
-    console.log(err.response?.data?.message);
-    toast.error(err.response?.data?.message || "Something went wrong. Try again! ❌", { duration: 3000 });
-    console.error(err);
-  }
-};
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 px-6 py-8 flex flex-col justify-center">
@@ -176,6 +181,15 @@ export default function Login() {
             </div>
           </form>
         </div>
+        <footer class="w-full mt-8">
+          <p class="text-center text-gray-500 text-sm md:text-base">
+            Designed & Developed by{" "}
+            <span class="font-semibold text-gray-800">Jinil Patel</span>
+          </p>
+          <p class="text-center text-gray-400 text-xs md:text-sm mt-1">
+            © 2025 All Rights Reserved
+          </p>
+        </footer>
       </div>
     </div>
   );

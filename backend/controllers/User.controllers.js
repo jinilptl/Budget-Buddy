@@ -10,12 +10,10 @@ import "dotenv/config"
 
 export const register = AsyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
-  console.log("name is ", name);
-  console.log("email is ", email);
-  console.log("password is ", password);
 
+  let trimeName=name.trim()
   // check fields
-  if (!name || !email || !password) {
+  if (!trimeName || !email || !password) {
     throw new ApiError(400, "All fields are required");
   }
 
@@ -31,7 +29,7 @@ export const register = AsyncHandler(async (req, res) => {
 
 
   // create user
- user = await UserModel.create({ name, email, password: hashedPassword });
+ user = await UserModel.create({ name:trimeName, email, password: hashedPassword });
 
   const userfind = await UserModel.findById(user._id).select("-password");
 
