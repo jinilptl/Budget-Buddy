@@ -119,6 +119,14 @@ export const forgotPassword = AsyncHandler(async (req, res) => {
     </div>
   `;
 
+  console.log("reset url is ",resetUrl);
+  console.log("user email is ",user.email);
+
+  console.log("SendGrid API Key:", process.env.SENDGRID_API_KEY ? "Exists" : "Missing");
+console.log("From Email:", process.env.EMAIL_FROM);
+  
+  
+
   try {
     await sendEmail({ email: user.email, subject: "BudgetBuddy Password Reset", message });
     res.status(200).json(new ApiResponse(200, {}, "Password reset email sent successfully"));
