@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo } from "react";
 import { TransactionList } from "../components/TransactionList";
 import { TransactionContext } from "../context/TransactionContext";
 import { AuthContext } from "../context/AuthContext";
@@ -24,24 +24,43 @@ const History = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Filtering for display (only month, year, search)
-  const filteredData = transactions.filter((txn) => {
-    const txnDate = new Date(txn.transactionDate);
-    if (selectedMonth !== "" && txnDate.getMonth() !== parseInt(selectedMonth)) return false;
-    if (selectedYear !== "" && txnDate.getFullYear() !== parseInt(selectedYear)) return false;
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      return (
-        txn.category.toLowerCase().includes(query) ||
-        (txn.description || "").toLowerCase().includes(query)
-      );
-    }
-    return true;
-  });
+  // Get unique categories for dropdown
+  const categories = useMemo(() => {
+    const set = new Set();
+    transactions.forEach(t => set.add(t.category));
+    return Array.from(set);
+  }, [transactions]);
+
+  // Filtering for display
+  const filteredData = useMemo(() => {
+    return transactions.filter((txn) => {
+      const txnDate = new Date(txn.transactionDate);
+
+      // Month & Year filter
+      if (selectedMonth !== "" && txnDate.getMonth() !== parseInt(selectedMonth)) return false;
+      if (selectedYear !== "" && txnDate.getFullYear() !== parseInt(selectedYear)) return false;
+
+      // Category filter
+      if (selectedCategory && txn.category !== selectedCategory) return false;
+
+      // Search filter: category, description, or transaction type
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        return (
+          txn.category.toLowerCase().includes(query) ||
+          (txn.description || "").toLowerCase().includes(query) ||
+          (txn.transactionType || "").toLowerCase().includes(query)
+        );
+      }
+
+      return true;
+    });
+  }, [transactions, selectedMonth, selectedYear, selectedCategory, searchQuery]);
 
   async function handleDeleteTransaction(id) {
     if (!id) return;
@@ -62,12 +81,12 @@ const History = () => {
       <h1 className="text-2xl font-bold mb-4">Transaction History</h1>
 
       {/* Main Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 items-end">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6 items-end">
         {/* Search */}
         <div className="md:col-span-2">
           <input
             type="text"
-            placeholder="Search category/description..."
+            placeholder="Search category/description/type..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full border rounded p-2 h-10"
@@ -98,6 +117,20 @@ const History = () => {
             <option value="">All Years</option>
             {[2023, 2024, 2025].map((y) => (
               <option key={y} value={y}>{y}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Category */}
+        <div>
+          <select
+            className="w-full border rounded p-2 h-10"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            <option value="">All Categories</option>
+            {categories.map((c, i) => (
+              <option key={i} value={c}>{c}</option>
             ))}
           </select>
         </div>
