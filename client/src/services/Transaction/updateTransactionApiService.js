@@ -2,6 +2,7 @@ import axios from "axios";
 
 
 const API_URL = import.meta.env.VITE_BASE_URL;
+axios.defaults.withCredentials = true;
 
 let token=localStorage.getItem('token')
 

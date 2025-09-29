@@ -8,6 +8,7 @@ const PasswordModal = ({ isOpen, onClose }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  axios.defaults.withCredentials = true;
 
   if (!isOpen) return null;
   let bakendurl = import.meta.env.VITE_BASE_URL;

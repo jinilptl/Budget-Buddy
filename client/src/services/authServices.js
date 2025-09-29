@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_BASE_URL;
+axios.defaults.withCredentials = true;
 
 export async function registerApi(formData) {
   const payload = {

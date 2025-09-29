@@ -1,6 +1,7 @@
 import axios from "axios";
 
 let token = localStorage.getItem("token");
+axios.defaults.withCredentials = true;
 export async function getSummeryApi() {
   try {
 

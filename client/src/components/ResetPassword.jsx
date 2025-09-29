@@ -8,6 +8,7 @@ const ResetPassword = () => {
   const { token } = useParams(); // token from URL
   const navigate = useNavigate();
 
+  axios.defaults.withCredentials = true;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);

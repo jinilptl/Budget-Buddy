@@ -18,7 +18,7 @@ export function Dashboard() {
 
   const { deleteTransaction, setTransactions, getSummery, Transactions } =
     useContext(TransactionContext);
-
+axios.defaults.withCredentials = true;
   const { user } = useContext(AuthContext);
 
   const tips = [
