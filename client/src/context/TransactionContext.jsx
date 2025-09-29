@@ -45,8 +45,12 @@ const TransactionContextProvider = ({ children }) => {
     try {
       const response = await addTransactionApi(formData);
       toast.success("✅ Transaction added successfully");
+      console.log("response from context",response);
+      
       return response;
     } catch (error) {
+      console.log("error in context",error);
+      
       toast.error(error.response?.data?.message || "❌ Failed to add transaction");
       throw error;
     }

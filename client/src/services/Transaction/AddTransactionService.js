@@ -3,8 +3,11 @@ import { useEffect } from "react";
 
 const API_URL = import.meta.env.VITE_BASE_URL;
 
-let token=localStorage.getItem('token')
 
+
+let token=localStorage.getItem('token')
+axios.defaults.withCredentials = true;
+console.log("add is ",API_URL);
 export async function addTransactionApi(formData) {
   const payload = {
     amount: formData.amount,
@@ -20,7 +23,8 @@ export async function addTransactionApi(formData) {
     },
     withCredentials: true,
   });
-
+    console.log("response from add api",response);
+    
   return response; 
 }
 

@@ -2,14 +2,14 @@ import { Edit, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 function formatAmount(amount) {
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat("en-IN", {
     style: "currency",
-    currency: "USD",
+    currency: "INR",
   }).format(amount);
 }
 
 function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString("en-US", {
+  return new Date(dateString).toLocaleDateString("en-IN", {
     month: "short",
     day: "numeric",
     year: "numeric",

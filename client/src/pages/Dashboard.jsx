@@ -50,11 +50,11 @@ export function Dashboard() {
   };
 
   const showDay = (date) => {
-    return date.toLocaleDateString("en-US", { weekday: "long" });
+    return date.toLocaleDateString("en-IN", { weekday: "long" });
   };
 
   const formatTime = (date) =>
-    date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    date.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 
   // ✅ Fetch latest 24h transactions
   async function fetchLatestTransactions() {

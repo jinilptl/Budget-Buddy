@@ -86,11 +86,11 @@ const ProfilePage = () => {
         </div>
         
 
-<footer class="w-full py-4 mt-8">
-  <p class="text-center text-gray-500 text-sm md:text-base">
-    Designed & Developed by <span class="font-semibold text-gray-800">Jinil Patel</span>
+<footer className="w-full py-4 mt-8">
+  <p className="text-center text-gray-500 text-sm md:text-base">
+    Designed & Developed by <span className="font-semibold text-gray-800">Jinil Patel</span>
   </p>
-  <p class="text-center text-gray-400 text-xs md:text-sm mt-1">
+  <p className="text-center text-gray-400 text-xs md:text-sm mt-1">
     © 2025 All Rights Reserved
   </p>
 </footer>
