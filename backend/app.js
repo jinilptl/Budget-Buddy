@@ -10,7 +10,8 @@ import { TransactionRouter } from "./routes/Transaction.routes.js";
 
 const app = express();
 
-const allowedOrigins = ["http://localhost:5173","http://192.168.1.114:5173"];
+const allowedOrigins = ["http://localhost:5173","budget-buddy-amber-ten.vercel.app"
+];
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
