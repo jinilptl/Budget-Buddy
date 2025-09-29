@@ -7,7 +7,9 @@ const API_URL = import.meta.env.VITE_BASE_URL;
 
 let token=localStorage.getItem('token')
 axios.defaults.withCredentials = true;
-console.log("add is ",API_URL);
+console.log("api urls ",API_URL);
+console.log("tokrn is ",token);
+
 export async function addTransactionApi(formData) {
   const payload = {
     amount: formData.amount,
