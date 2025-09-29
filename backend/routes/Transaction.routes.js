@@ -9,7 +9,7 @@ import {
   getTransactionSummary,
   getAllRecentTransactions,
 } from "../controllers/Transactions.controllers.js";
-import { VerifyToken ,VerifyTokenTest} from "../middlewares/auth.middlewares.js";
+import { VerifyToken} from "../middlewares/auth.middlewares.js";
 
 const TransactionRouter = express.Router();
 
@@ -24,6 +24,6 @@ TransactionRouter.route("/get/:id").get(VerifyToken,getTransactionById);
 TransactionRouter.route("/update/:id").put(VerifyToken,updateTransaction);
 TransactionRouter.route("/delete/:id").delete(VerifyToken,deleteTransaction);
 
-TransactionRouter.route("/latest").get(VerifyTokenTest,getAllRecentTransactions);
+TransactionRouter.route("/latest").get(VerifyToken,getAllRecentTransactions);
 
 export {TransactionRouter};
