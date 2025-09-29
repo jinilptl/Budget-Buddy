@@ -11,6 +11,15 @@ const VerifyToken = (req, res, next) => {
     return next(new ApiError(401, "Unauthorized at finding token"));
   }
 
+  console.log("fronted sended token is ", token);
+
+  console.log("___________________________________________________________");
+
+  console.log("procerss .env secret is ", process.env.JWT_SECRET);
+  
+  
+  
+
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       return next(new ApiError(401, "Unauthorized at verifying token"));
