@@ -16,9 +16,7 @@ const TransactionContextProvider = ({ children }) => {
       const response = await getAllTransactionsApi();
       if (response) {
         return response;
-      } else {
-        toast.error("❌ Failed to fetch all transactions in context");
-      }
+      } 
     } catch (error) {
       toast.error("❌ Error fetching transactions");
       throw error;
@@ -44,14 +42,9 @@ const TransactionContextProvider = ({ children }) => {
   async function addTransaction(formData) {
     try {
       const response = await addTransactionApi(formData);
-      toast.success("✅ Transaction added successfully");
-      console.log("response from context",response);
-      
+
       return response;
     } catch (error) {
-      console.log("error in context",error);
-      
-      toast.error(error.response?.data?.message || "❌ Failed to add transaction");
       throw error;
     }
   }
@@ -59,10 +52,9 @@ const TransactionContextProvider = ({ children }) => {
   async function updateTransaction(formData) {
     try {
       const response = await updateTransactionApi(formData);
-      toast.success("✅ Transaction updated successfully");
+
       return response;
     } catch (error) {
-      toast.error(error.response?.data?.message || "❌ Failed to update transaction");
       throw error;
     }
   }
@@ -70,10 +62,12 @@ const TransactionContextProvider = ({ children }) => {
   async function deleteTransaction(id) {
     try {
       const response = await deleteTransactionApi(id);
-      toast.success("✅ Transaction deleted successfully");
+  
       return response;
     } catch (error) {
-      toast.error(error.response?.data?.message || "❌ Failed to delete transaction");
+      toast.error(
+        error.response?.data?.message || "❌ Failed to delete transaction"
+      );
       throw error;
     }
   }
@@ -83,9 +77,7 @@ const TransactionContextProvider = ({ children }) => {
       const response = await getSummeryApi();
       if (response) {
         return response;
-      } else {
-        toast.error("❌ Failed to fetch summary in context");
-      }
+      } 
     } catch (error) {
       toast.error("❌ Error fetching summary");
       throw error;

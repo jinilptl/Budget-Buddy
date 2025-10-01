@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import ShowSuccess from "../components/ShowSuccess";
+import ShowSuccess from "../../components/modals/ShowSuccess";
 import { data, useNavigate, useParams } from "react-router-dom";
-import { TransactionContext } from "../context/TransactionContext";
-import { toast } from "react-hot-toast"; 
+import { TransactionContext } from "../../context/TransactionContext";
+import { toast } from "react-hot-toast";
+import { Calendar } from "lucide-react";
 
 export default function AddTransaction({ isEdit }) {
-  const { addTransaction, setTransactions, Transactions,updateTransaction } =
+  const { addTransaction, setTransactions, Transactions, updateTransaction } =
     useContext(TransactionContext);
 
   const [showSuccess, setShowSuccess] = useState(false);
@@ -17,7 +18,7 @@ export default function AddTransaction({ isEdit }) {
     description: "",
     category: "",
     transactionType: "expense",
-    transactionDate: "",
+    transactionDate: new Date().toISOString().split("T")[0],
   });
 
   /** ---------- Load Existing Transaction for Edit ---------- **/
@@ -68,33 +69,32 @@ export default function AddTransaction({ isEdit }) {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    if (isEdit) {
-      const response = await updateTransaction(formData);
-      if (response.status === 200) {
-        let data = response.data.data;
-        setTransactions((prev) =>
-          prev.map((transaction) => (transaction._id === data._id ? data : transaction))
-        );
-        toast.success("Transaction updated successfully ✅"); // ✅ Toast
-        handleSuccess();
+    e.preventDefault();
+    try {
+      if (isEdit) {
+        const response = await updateTransaction(formData);
+        if (response.status === 200) {
+          let data = response.data.data;
+          setTransactions((prev) =>
+            prev.map((transaction) =>
+              transaction._id === data._id ? data : transaction
+            )
+          );
+          handleSuccess();
+        }
+      } else {
+        const response = await addTransaction(formData);
+        if (response.status === 201) {
+          setTransactions((prev) => [response.data.data, ...prev]);
+          // toast.success("Transaction added successfully ✅"); // ✅ Toast
+          handleSuccess();
+        }
       }
-    } else {
-      const response = await addTransaction(formData);
-      if (response.status === 201) {
-        setTransactions((prev) => [response.data.data, ...prev]);
-        toast.success("Transaction added successfully ✅"); // ✅ Toast
-        handleSuccess();
-      }
+    } catch (error) {
+      console.error("Transaction error:", error);
+      toast.error(error.response?.data?.message || "Something went wrong ❌"); // ✅ Toast
     }
-  } catch (error) {
-    console.error("Transaction error:", error);
-    toast.error(
-      error.response?.data?.message || "Something went wrong ❌"
-    ); // ✅ Toast
-  }
-};
+  };
 
   /** ---------- Categories ---------- **/
   const expenseCategories = [
@@ -106,6 +106,7 @@ export default function AddTransaction({ isEdit }) {
     { name: "Healthcare", color: "bg-pink-100 text-pink-600" },
     { name: "Education", color: "bg-indigo-100 text-indigo-600" },
     { name: "Entertainment", color: "bg-yellow-100 text-yellow-600" },
+    { name: "Other", color: "bg-teal-100 text-teal-600" },
   ];
 
   const incomeCategories = [
@@ -113,6 +114,7 @@ export default function AddTransaction({ isEdit }) {
     { name: "Freelance", color: "bg-blue-100 text-blue-600" },
     { name: "Investment", color: "bg-purple-100 text-purple-600" },
     { name: "Gift", color: "bg-pink-100 text-pink-600" },
+    { name: "Other", color: "bg-teal-100 text-teal-600" },
   ];
 
   const categories =
@@ -124,7 +126,10 @@ export default function AddTransaction({ isEdit }) {
   return (
     <>
       {showSuccess && (
-        <ShowSuccess isIncome={formData.transactionType === "income"} isEdit={isEdit} />
+        <ShowSuccess
+          isIncome={formData.transactionType === "income"}
+          isEdit={isEdit}
+        />
       )}
 
       <div className="min-h-screen bg-gray-50 p-4">
@@ -206,7 +211,7 @@ export default function AddTransaction({ isEdit }) {
               <label className="font-medium mb-3 block">Amount</label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-500">
-                  $
+                  ₹
                 </span>
                 <input
                   type="number"
@@ -263,18 +268,22 @@ export default function AddTransaction({ isEdit }) {
             <div className="p-4">
               <label className="font-medium mb-3 block">Date</label>
               <div className="relative">
+                {/* Calendar Icon */}
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <Calendar className="h-5 w-5 text-gray-400" />
+                </div>
+
                 <input
                   type="date"
                   name="transactionDate"
                   max={new Date().toISOString().split("T")[0]}
                   onChange={handleChange}
                   value={formData.transactionDate}
-                  className="pl-10 h-10 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="pl-10  h-10  w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
               </div>
             </div>
           </div>
-
           {/* Description */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200">
             <div className="p-4">

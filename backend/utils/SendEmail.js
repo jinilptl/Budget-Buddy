@@ -1,52 +1,63 @@
-// import nodemailer from "nodemailer";
-
-// please fix it with nodemailer and gmail password
-
-// export const sendEmail = async (options) => {
-//   console.log("user ", process.env.MAIL_USER);
-//   console.log("pass ", process.env.MAIL_PASS);
 
 
 
-  
-//   // Transporter config
-//   const transporter = nodemailer.createTransport({
-//   host: "smtp.gmail.com",
-//   port: 465, // ya 587
-//   secure: true, // 465 ke liye true, 587 ke liye false
-//   auth: {
-//     user: process.env.SMTP_USER,
-//     pass: process.env.SMTP_PASS,
-//   },
-// });
 
-//   // Mail options
-//   const mailOptions = {
-//     from: `"BudgetBuddy 🪙" <${process.env.SMTP_USER}>`,
-//     to: options.email,
-//     subject: options.subject,
-//     html: options.message, // HTML template
-//   };
+import nodemailer from "nodemailer";
 
-//   // Send mail
-//   await transporter.sendMail(mailOptions);
-// };
-
-
-import sgMail from "@sendgrid/mail";
-import "dotenv/config";
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const sendEmail = async ({ email, subject, message }) => {
-  const msg = {
-    to: email,
-    from: process.env.EMAIL_FROM,
-    subject,
-    html: message,
-  };
+  console.log("sendEmail called with:", { email, subject, message });
 
+  console.log("MAIL_USER:", process.env.MAIL_USER);
+  console.log("MAIL_PASS:", process.env.MAIL_PASS )
+  
+  
+  try {
+    // Create transporter
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // true for 465
+      auth: {
+        user: process.env.MAIL_USER, // your Gmail
+        pass: process.env.MAIL_PASS, // 16-character App Password
+      },
+    });
 
+    // Email options
+    const mailOptions = {
+      from: `"BudgetBuddy 🪙" <${process.env.SMTP_USER}>`,
+      to: email,
+      subject: subject,
+      html: message,
+    };
 
-  await sgMail.send(msg);
+    // Send email
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent:", info.messageId);
+    return info;
+  } catch (err) {
+    console.error("Error sending email:", err);
+    throw new Error("Email could not be sent");
+  }
 };
+
+
+
+// import sgMail from "@sendgrid/mail";
+// import "dotenv/config";
+
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+// export const sendEmail = async ({ email, subject, message }) => {
+//   const msg = {
+//     to: email,
+//     from: process.env.EMAIL_FROM,
+//     subject,
+//     html: message,
+//   };
+
+
+
+//   await sgMail.send(msg);
+// };

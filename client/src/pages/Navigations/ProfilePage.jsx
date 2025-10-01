@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { TransactionContext } from "../context/TransactionContext";
+import { AuthContext } from "../../context/AuthContext";
+import { TransactionContext } from "../../context/TransactionContext";
 import { useNavigate } from "react-router-dom";
-import PasswordModal from "../components/PasswordChangeModal";
+import PasswordModal from "../../components/modals/PasswordChangeModal";
 
 const ProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -13,9 +13,15 @@ const ProfilePage = () => {
 
   let totalTransactions = Transactions ? Transactions.length : 0;
 
-  const dateFormatted = (dateString) => {
-    return dateString?.split("T")[0];
-  };
+ const dateFormatted = (dateString) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-indexed
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
 
   function logoutNavigate() {
     if (confirm("are you sure you want to logout?")) {
@@ -28,7 +34,7 @@ const ProfilePage = () => {
     name ? name.charAt(0).toUpperCase() : "?";
 
   return (
-    <div className="flex items-center justify-center bg-gray-50 mt-32">
+    <div className="flex items-center justify-center bg-gray-50    mt-16 ">
       <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-6 text-center">
         {/* Avatar */}
         <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-r from-emerald-500 to-blue-500 flex items-center justify-center text-white text-3xl font-bold shadow-md">

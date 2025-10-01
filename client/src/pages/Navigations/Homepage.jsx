@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { Plus } from "lucide-react";
-import { SummaryCard } from "../components/SummaryCard.jsx";
-import { TransactionList } from "../components/TransactionList.jsx";
+import { SummaryCard } from "../../components/Transactions/SummaryCard.jsx";
+import { TransactionList } from "../../components/Transactions/TransactionList.jsx";
 import { Link } from "react-router-dom";
-import { TransactionContext } from "../context/TransactionContext.jsx";
+import { TransactionContext } from "../../context/TransactionContext.jsx";
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext.jsx";
+import { AuthContext } from "../../context/AuthContext.jsx";
 import { toast } from "react-hot-toast"; // ✅ Toast import
 
-export function Dashboard() {
+export function Homepage() {
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
   const [balance, setBalance] = useState(0);
@@ -112,7 +112,7 @@ axios.defaults.withCredentials = true;
         toast.success("Transaction deleted successfully ✅"); // ✅ Toast
       }
     } catch (error) {
-      console.error("Error deleting transaction", error);
+     
       toast.error("Failed to delete transaction ❌"); // ✅ Toast
     }
   }

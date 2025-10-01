@@ -23,7 +23,7 @@ export async function loginApi(formData) {
     password: formData.password,
   };
 
-  console.log("inside api calling");
+ 
   
   const response = await axios.post(`${API_URL}/users/login`, payload, {
     withCredentials: true,

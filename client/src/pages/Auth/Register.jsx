@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { data, Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import IconOnly from "../components/logo/IconOnly";
+import { AuthContext } from "../../context/AuthContext";
+import IconOnly from "../../components/logo/IconOnly";
 import { toast } from "react-hot-toast"; // ✅ Only toast import
 
 export default function Register() {
@@ -41,17 +41,17 @@ export default function Register() {
       if (response.status === 201) {
         let data = response.data.data;
         setUser(data.user);
-        toast.success("Account created successfully! 🎉"); // ✅ Toast
+        toast.success("Account created successfully! 🎉"); 
         navigate("/");
       } else {
-        toast.error("Registration failed. Try again."); // ✅ fallback
+        toast.error("Registration failed. Try again."); 
       }
     } catch (err) {
       console.log(err.response?.data?.message);
 
       const message = err.response?.data?.message || "Registration failed";
       setError(message);
-      toast.error(message + " ❌"); // ✅ Toast
+      toast.error(message + " ❌"); 
     } finally {
       setLoading(false);
     }
@@ -237,12 +237,12 @@ export default function Register() {
           </div>
            
         </div>
-        <footer class="w-full mt-5">
-          <p class="text-center text-gray-500 text-sm md:text-base">
+        <footer className="w-full mt-5">
+          <p className="text-center text-gray-500 text-sm md:text-base">
             Designed & Developed by{" "}
-            <span class="font-semibold text-gray-800">Jinil Patel</span>
+            <span className="font-semibold text-gray-800">Jinil Patel</span>
           </p>
-          <p class="text-center text-gray-400 text-xs md:text-sm mt-1">
+          <p className="text-center text-gray-400 text-xs md:text-sm mt-1">
             © 2025 All Rights Reserved
           </p>
         </footer>

@@ -19,7 +19,6 @@ const AuthContextProvider = ({ children }) => {
   async function registerUser(formData) {
     try {
       const response = await registerApi(formData);
-      toast.success("✅ Registration successful"); // toast success
       return response;
     } catch (error) {
       toast.error(error.response?.data?.message || "❌ Registration failed"); // toast error
@@ -31,7 +30,7 @@ const AuthContextProvider = ({ children }) => {
   async function loginUser(formData) {
     try {
       const response = await loginApi(formData);
-      toast.success("✅ Login successful"); // toast success
+      
       return response;
     } catch (error) {
       toast.error(error.response?.data?.message || "❌ Login failed"); // toast error

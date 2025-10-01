@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast"; // ✅ import toast
-import IconOnly from "./logo/IconOnly";
+import IconOnly from "../logo/IconOnly";
 
 const ResetPassword = () => {
   const { token } = useParams(); // token from URL

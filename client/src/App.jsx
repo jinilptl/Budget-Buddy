@@ -1,19 +1,19 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
 
-import ProtectedWrapper from "./pages/ProtectedWrapper";
-import PublicWrapper from "./components/Publicwrapper";
-import Logout from "./pages/Logout";
-import AddTransaction from "./pages/AddTransaction";
-import { MainApp } from "./pages/MainApp";
-import { Dashboard } from "./pages/Dashboard";
-import History from "./pages/History";
+import ProtectedWrapper from "./components/Wrapper/ProtectedWrapper";
+import PublicWrapper from "./components/Wrapper/Publicwrapper";
+import Logout from "./pages/Auth/Logout";
+import AddTransaction from "./pages/Navigations/AddTransaction";
+import { MainApp } from "./pages/main/MainApp";
+import {  Homepage } from "./pages/Navigations/Homepage";
+import History from "./pages/Navigations/History";
 import Analytics from "./pages/Analytics/Analytics";
-import ProfilePage from "./pages/ProfilePage";
-import ResetPassword from "./components/ResetPassword";
-import EnterEmailForReset from "./components/EnterEmailForReset";
+import ProfilePage from "./pages/Navigations/ProfilePage";
+import ResetPassword from "./components/passwordReset/ResetPassword";
+import EnterEmailForReset from "./components/passwordReset/EnterEmailForReset";
 
 function App() {
   return (
@@ -45,8 +45,8 @@ function App() {
           </ProtectedWrapper>
         }
       >
-        <Route index element={<Dashboard />} />
-        <Route path="main" element={<Dashboard />} />
+        <Route index element={<Homepage />} />
+        <Route path="main" element={<Homepage />} />
         <Route path="add-transaction" element={<AddTransaction isEdit={false}/>} />
         <Route path="edit-transaction/:id" element={<AddTransaction isEdit={true} />} />
         <Route path="history" element={<History />} />

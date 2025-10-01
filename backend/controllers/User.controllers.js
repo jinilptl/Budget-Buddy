@@ -32,6 +32,38 @@ export const register = AsyncHandler(async (req, res) => {
  user = await UserModel.create({ name:trimeName, email, password: hashedPassword });
 
   const userfind = await UserModel.findById(user._id).select("-password");
+const message = `<div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; background-color: #f9f9f9;">
+  <h2 style="color: #4CAF50;">🎉 Welcome to BudgetBuddy, ${name}!</h2>
+  <p>We’re thrilled to have you on board! With BudgetBuddy 🪙, managing your finances has never been easier.</p>
+
+  <h3 style="color: #333;">Here’s what you can do:</h3>
+  <ul style="list-style: none; padding-left: 0;">
+    <li>✅ <strong>Create, Read, Update, Delete (CRUD)</strong> your income and expenses effortlessly.</li>
+    <li>📊 <strong>Visualize your finances</strong> with interactive charts for better insights.</li>
+    <li>📝 <strong>Export PDFs</strong> of your transactions and reports anytime.</li>
+    <li>📥 <strong>Download PDFs</strong> for personal records or sharing.</li>
+    <li>🔔 Get <strong>real-time notifications</strong> and stay on top of your budget.</li>
+  </ul>
+
+  <p style="margin-top: 20px;">Start exploring and take control of your money today! 💪</p>
+
+  <a href="https://yourapp.com/login" style="display: inline-block; padding: 12px 25px; margin-top: 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
+
+  <p style="font-size: 14px; color: #777; margin-top: 25px;">
+    If you have any questions or need help, just reply to this email. <br/>
+    Cheers, <br/> The BudgetBuddy Team
+  </p>
+</div>
+`
+  try {
+    await sendEmail({
+      email: userfind.email,
+      subject: "Welcome to BudgetBuddy!",
+      message: message,
+    });
+  } catch (error) {
+    console.log("nodemailer error while registration:", error);
+  }
 
 
   return res
@@ -119,13 +151,7 @@ export const forgotPassword = AsyncHandler(async (req, res) => {
     </div>
   `;
 
-  console.log("reset url is ",resetUrl);
-  console.log("user email is ",user.email);
-
-  console.log("SendGrid API Key:", process.env.SENDGRID_API_KEY ? "Exists" : "Missing");
-console.log("From Email:", process.env.EMAIL_FROM);
-  
-  
+;
 
   try {
     await sendEmail({ email: user.email, subject: "BudgetBuddy Password Reset", message });

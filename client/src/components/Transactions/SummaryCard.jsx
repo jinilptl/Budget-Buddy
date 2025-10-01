@@ -1,4 +1,4 @@
-import { TrendingUp, TrendingDown, DollarSign } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, IndianRupee } from 'lucide-react';
 
 export function SummaryCard({ title, amount, type, className = '' }) {
   const formatAmount = (amount) => {
@@ -15,9 +15,9 @@ export function SummaryCard({ title, amount, type, className = '' }) {
       case 'expense':
         return <TrendingDown className="h-6 w-6 text-red-500" />;
       case 'balance':
-        return <DollarSign className="h-6 w-6 text-teal-500" />;
+        return <IndianRupee className="h-6 w-6 text-teal-500" />;
       default:
-        return <DollarSign className="h-6 w-6 text-gray-500" />;
+        return <IndianRupee className="h-6 w-6 text-gray-500" />;
     }
   };
 

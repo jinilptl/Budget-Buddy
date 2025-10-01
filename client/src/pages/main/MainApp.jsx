@@ -1,8 +1,8 @@
 import React from "react";
 import { Home, History, Plus, BarChart3, User } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
-import MainLogo from "../components/logo/MainLogo";
-import Avatar from "../components/Avatar";
+import MainLogo from "../../components/logo/MainLogo";
+import Avatar from "../../components/Avatar";
 
 export function MainApp() {
   return (

@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import IconOnly from "../components/logo/IconOnly";
+import { AuthContext } from "../../context/AuthContext";
+import IconOnly from "../../components/logo/IconOnly";
 import { Toaster, toast } from "react-hot-toast";
 
 export default function Login() {
@@ -33,13 +33,11 @@ export default function Login() {
         setUser(data.user);
         localStorage.setItem("token", JSON.stringify(token));
 
-        // ✅ Show toast and auto-hide after 2 seconds
-        toast.success("Logged in successfully! 🎉", { duration: 2000 });
+        toast.success("Logged in successfully! 🎉", { duration: 1500 });
 
-        // ✅ Delay navigation so toast is visible
         setTimeout(() => {
           navigate("/home");
-        }, 2000);
+        }, 1500);
       } else {
         toast.error("Login failed. Please check your credentials.", {
           duration: 3000,
@@ -57,21 +55,6 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 px-6 py-8 flex flex-col justify-center">
-      {/* ✅ Global Toaster */}
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          style: {
-            background: "#333",
-            color: "#fff",
-            fontSize: "14px",
-            padding: "10px 16px",
-            borderRadius: "12px",
-            maxWidth: "90%",
-          },
-        }}
-      />
-
       <div className="max-w-md mx-auto w-full opacity-100 translate-y-0">
         {/* Header */}
         <div className="text-center mb-8">
@@ -181,12 +164,12 @@ export default function Login() {
             </div>
           </form>
         </div>
-        <footer class="w-full mt-8">
-          <p class="text-center text-gray-500 text-sm md:text-base">
+        <footer className="w-full mt-8">
+          <p className="text-center text-gray-500 text-sm md:text-base">
             Designed & Developed by{" "}
-            <span class="font-semibold text-gray-800">Jinil Patel</span>
+            <span className="font-semibold text-gray-800">Jinil Patel</span>
           </p>
-          <p class="text-center text-gray-400 text-xs md:text-sm mt-1">
+          <p className="text-center text-gray-400 text-xs md:text-sm mt-1">
             © 2025 All Rights Reserved
           </p>
         </footer>

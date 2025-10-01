@@ -1,10 +1,11 @@
 import React, { useContext, useState, useMemo } from "react";
-import { TransactionList } from "../components/TransactionList";
-import { TransactionContext } from "../context/TransactionContext";
-import { AuthContext } from "../context/AuthContext";
+import { TransactionList } from "../../components/Transactions/TransactionList";
+import { TransactionContext } from "../../context/TransactionContext";
+import { AuthContext } from "../../context/AuthContext";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import DownloadModal from "../components/DownloadModal";
+import DownloadModal from "../../components/modals/DownloadModal";
+import toast from "react-hot-toast";
 
 pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs;
 
@@ -69,12 +70,38 @@ const History = () => {
     try {
       const res = await deleteTransaction(id);
       if (res.status === 200) {
+         toast.success("Transaction deleted successfully ✅");
         setTransactions((prev) => prev.filter((tx) => tx._id !== id));
+        
       }
     } catch (error) {
       console.error("Error deleting transaction", error);
     }
   }
+
+// Dynamically calculate years
+const availableYears = useMemo(() => {
+  if (!transactions.length) return [];
+
+  // Extract all years from transaction dates
+  const yearsSet = new Set(
+    transactions.map(txn => new Date(txn.transactionDate).getFullYear())
+  );
+
+  const yearsArray = Array.from(yearsSet).sort((a, b) => b - a); // descending order
+
+  const currentYear = new Date().getFullYear();
+
+  // Ensure at least last 3 years including current year
+  const minYear = currentYear - 2;
+  for (let y = currentYear; y >= minYear; y--) {
+    if (!yearsSet.has(y)) yearsArray.push(y);
+  }
+
+  // Remove duplicates + sort again
+  return Array.from(new Set(yearsArray)).sort((a, b) => b - a);
+}, [transactions]);
+
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -108,7 +135,7 @@ const History = () => {
         </div>
 
         {/* Year */}
-        <div>
+        {/* <div>
           <select
             className="w-full border rounded p-2 h-10"
             value={selectedYear}
@@ -119,7 +146,23 @@ const History = () => {
               <option key={y} value={y}>{y}</option>
             ))}
           </select>
-        </div>
+        </div> */}
+
+
+        <div>
+  <select
+    className="w-full border rounded p-2 h-10"
+    value={selectedYear}
+    onChange={(e) => setSelectedYear(e.target.value)}
+  >
+    <option value="">All Years</option>
+    {availableYears.map((y) => (
+      <option key={y} value={y}>{y}</option>
+    ))}
+  </select>
+</div>
+
+
 
         {/* Category */}
         <div>

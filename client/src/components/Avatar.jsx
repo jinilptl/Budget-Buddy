@@ -17,7 +17,7 @@ const Avatar = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
  
-console.log("user name ",user?.name);
+
 
   let name = user?.name?.trim() || "Guest";
   // pick gradient based on first letter
@@ -28,8 +28,6 @@ console.log("user name ",user?.name);
 
    function logoutNavigate() {
     if (confirm("are you sure you want to logout?")) {
-      
-      
       navigate("/logout");
     }
   }

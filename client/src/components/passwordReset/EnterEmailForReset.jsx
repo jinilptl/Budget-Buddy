@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast"; // ✅ import toast
-import MainLogo from "./logo/MainLogo";
-import IconOnly from "./logo/IconOnly";
+import MainLogo from "../logo/MainLogo";
+import IconOnly from "../logo/IconOnly";
 
 const EnterEmailForReset = () => {
   const [email, setEmail] = useState("");
