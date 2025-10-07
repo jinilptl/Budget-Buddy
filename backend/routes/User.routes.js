@@ -9,7 +9,7 @@ UserRouter.route('/register').post(register)
 UserRouter.route('/login').post(login)
 UserRouter.route("/forgot-password").post(forgotPassword);
 UserRouter.route("/reset-password/:token").post(resetPassword);
-console.log("change password route called");
+
 
 UserRouter.route("/change-password").post(VerifyToken, changePassword);
 

@@ -129,7 +129,7 @@ axios.defaults.withCredentials = true;
         {/* Greeting Box */}
         <div className="mb-8 p-6 rounded-2xl md:w-[50%] bg-gradient-to-r from-emerald-500 to-blue-500 text-white shadow-lg">
           <h2 className="text-2xl font-bold">
-            {getGreeting()}, <span className="capitalize">{user?.name || "User"} 👋</span>
+            {getGreeting()}, <span className="capitalize">{user?.name.split(" ")[0] || "User"} 👋</span>
           </h2>
           <p className="text-lg font-semibold">{showDay(time)}</p>
           <p className="text-sm opacity-90">{formatDate(time)}</p>

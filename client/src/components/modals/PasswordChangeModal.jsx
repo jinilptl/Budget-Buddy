@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
+import { Eye, EyeOff } from "lucide-react";
 
 const PasswordModal = ({ isOpen, onClose }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   axios.defaults.withCredentials = true;
 
   if (!isOpen) return null;
   let bakendurl = import.meta.env.VITE_BASE_URL;
-  console.log("token",localStorage.getItem("token"));
-
-  let token=JSON.parse(localStorage.getItem("token"));
-  const payload={ oldPassword:currentPassword, newPassword };
+  let token = JSON.parse(localStorage.getItem("token"));
+  const payload = { oldPassword: currentPassword, newPassword };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,13 +31,20 @@ const PasswordModal = ({ isOpen, onClose }) => {
       setLoading(true);
       setMessage(null);
 
-      const { data } = await axios.post(`${bakendurl}/users/change-password`,payload,{
-        headers:{
-            Authorization: `Bearer ${token}`
+      const { data } = await axios.post(
+        `${bakendurl}/users/change-password`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
 
-      setMessage({ type: "success", text: data?.message || "Password changed successfully" });
+      setMessage({
+        type: "success",
+        text: data?.message || "Password changed successfully",
+      });
 
       // reset form
       setCurrentPassword("");
@@ -45,8 +54,6 @@ const PasswordModal = ({ isOpen, onClose }) => {
       // auto-close modal after success
       setTimeout(() => {
         onClose();
-       
-
         setMessage(null);
       }, 2000);
     } catch (error) {
@@ -78,7 +85,6 @@ const PasswordModal = ({ isOpen, onClose }) => {
           onClick={(e) => e.stopPropagation()}
           className="bg-white rounded-2xl shadow-xl w-[90%] max-w-md p-6 text-center"
         >
-          {/* Title */}
           <h2 className="text-xl font-semibold text-gray-800 mb-2">
             Change Password
           </h2>
@@ -88,30 +94,74 @@ const PasswordModal = ({ isOpen, onClose }) => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="password"
-              placeholder="Current Password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none"
-              required
-            />
-            <input
-              type="password"
-              placeholder="New Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none"
-              required
-            />
-            <input
-              type="password"
-              placeholder="Confirm New Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none"
-              required
-            />
+            {/* Current Password */}
+            <div className="relative">
+              <input
+                type={showCurrentPassword ? "text" : "password"}
+                placeholder="Current Password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+              >
+                {showCurrentPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
+
+            {/* New Password */}
+            <div className="relative">
+              <input
+                type={showNewPassword ? "text" : "password"}
+                placeholder="New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+              >
+                {showNewPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
+
+            {/* Confirm Password */}
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm New Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
 
             {/* Message */}
             {message && (

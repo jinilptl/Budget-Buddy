@@ -32,29 +32,43 @@ export const register = AsyncHandler(async (req, res) => {
  user = await UserModel.create({ name:trimeName, email, password: hashedPassword });
 
   const userfind = await UserModel.findById(user._id).select("-password");
-const message = `<div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; background-color: #f9f9f9;">
-  <h2 style="color: #4CAF50;">🎉 Welcome to BudgetBuddy, ${name}!</h2>
-  <p>We’re thrilled to have you on board! With BudgetBuddy 🪙, managing your finances has never been easier.</p>
+  const loginUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+  console.log(loginUrl);
+  
+const message = `
+    <div style="font-family: Arial, sans-serif; padding:20px; background:#f4f4f4;">
+      <div style="max-width:600px;margin:auto;background:white;border-radius:10px;overflow:hidden;box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+        <div style="background:linear-gradient(90deg,#22c55e,#3b82f6);padding:20px;text-align:center;color:white;">
+          <h1 style="margin:0;">Welcome to BudgetBuddy! 🪙</h1>
+        </div>
+        <div style="padding:20px;">
+          <p>Hi <b>${userfind?.name}</b>,</p>
+          <p>🎉 Welcome aboard! We're thrilled to have you join the <b>BudgetBuddy</b> community.</p>
+          <p>You've just taken the first step toward smarter financial management. With BudgetBuddy, you can:</p>
+          <ul style="line-height:1.8;color:#333;">
+            <li>📊 Track your expenses effortlessly</li>
+            <li>💰 Set and achieve your financial goals</li>
+            <li>📈 Get insights into your spending habits</li>
+            <li>🎯 Stay on top of your budget</li>
+          </ul>
+          <p>Ready to get started?</p>
+          <div style="text-align:center;margin:20px 0;">
+            <a href="${loginUrl}" style="background:#22c55e;color:white;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold;display:inline-block;">Go to Dashboard</a>
+          </div>
+          <p style="background:#f0f9ff;border-left:4px solid #3b82f6;padding:12px;margin:20px 0;border-radius:4px;">
+            <b>💡 Quick Tip:</b> Start by adding your first expense or setting up your monthly budget to see BudgetBuddy in action!
+          </p>
+          <p>If you have any questions or need help getting started, we're here for you. Just reply to this email!</p>
+          <p style="color:#6b7280;font-size:14px;">If you have any problem, feel free to mail us at <a href="mailto:team.budgetbuddy10@gmail.com" style="color:#3b82f6;text-decoration:none;">team.budgetbuddy10@gmail.com</a></p>
+          <p style="margin-top:30px;">Here's to your financial success! 🚀<br/>The BudgetBuddy Team</p>
+        </div>
+        <div style="background:#f9fafb;padding:15px;text-align:center;color:#6b7280;font-size:12px;">
+          <p style="margin:0;">Follow us for tips and updates</p>
+        </div>
+      </div>
+    </div>
+  `;
 
-  <h3 style="color: #333;">Here’s what you can do:</h3>
-  <ul style="list-style: none; padding-left: 0;">
-    <li>✅ <strong>Create, Read, Update, Delete (CRUD)</strong> your income and expenses effortlessly.</li>
-    <li>📊 <strong>Visualize your finances</strong> with interactive charts for better insights.</li>
-    <li>📝 <strong>Export PDFs</strong> of your transactions and reports anytime.</li>
-    <li>📥 <strong>Download PDFs</strong> for personal records or sharing.</li>
-    <li>🔔 Get <strong>real-time notifications</strong> and stay on top of your budget.</li>
-  </ul>
-
-  <p style="margin-top: 20px;">Start exploring and take control of your money today! 💪</p>
-
-  <a href="https://yourapp.com/login" style="display: inline-block; padding: 12px 25px; margin-top: 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
-
-  <p style="font-size: 14px; color: #777; margin-top: 25px;">
-    If you have any questions or need help, just reply to this email. <br/>
-    Cheers, <br/> The BudgetBuddy Team
-  </p>
-</div>
-`
   try {
     await sendEmail({
       email: userfind.email,
@@ -62,7 +76,7 @@ const message = `<div style="font-family: Arial, sans-serif; color: #333; max-wi
       message: message,
     });
   } catch (error) {
-    console.log("nodemailer error while registration:", error);
+    console.log("mailer error while registration:", error);
   }
 
 
@@ -204,14 +218,11 @@ export const resetPassword = AsyncHandler(async (req, res) => {
 
 
 export const changePassword = AsyncHandler(async (req, res) => {
-  console.log("change password controller called");
+ 
   
   const userId = req.user?.id; // from verifyJWT
   const { oldPassword, newPassword } = req.body;
 
-   console.log(
-    oldPassword, newPassword, userId
-   );
    
   if (!oldPassword || !newPassword) {
     throw new ApiError(400, "Old password and new password are required");

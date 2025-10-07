@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast"; // ✅ import toast
 import IconOnly from "../logo/IconOnly";
+import { Eye, EyeOff } from "lucide-react";
 
 const ResetPassword = () => {
   const { token } = useParams(); // token from URL
@@ -11,6 +12,8 @@ const ResetPassword = () => {
   axios.defaults.withCredentials = true;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -47,7 +50,7 @@ const ResetPassword = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full bg-white shadow-lg rounded-2xl p-8">
         <div className="mb-4">
-          <IconOnly size="small"/>
+          <IconOnly size="small" />
         </div>
         <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
           Reset Password
@@ -57,32 +60,54 @@ const ResetPassword = () => {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+          {/* New Password */}
+          <div className="relative">
             <label className="block text-gray-700 text-sm mb-1">
               New Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
+            >
+              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
           </div>
-          <div>
+
+          {/* Confirm Password */}
+          <div className="relative">
             <label className="block text-gray-700 text-sm mb-1">
               Confirm Password
             </label>
             <input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
               minLength={6}
             />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
+            >
+              {showConfirmPassword ? (
+                <EyeOff className="w-5 h-5" />
+              ) : (
+                <Eye className="w-5 h-5" />
+              )}
+            </button>
           </div>
+
           <button
             type="submit"
             className={`w-full ${

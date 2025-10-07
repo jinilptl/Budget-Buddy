@@ -10,6 +10,7 @@ export default function Register() {
   const { registerUser, setUser } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -167,29 +168,40 @@ export default function Register() {
                 </div>
               </div>
 
+
+              
               {/* Confirm Password */}
-              <div className="space-y-2">
-                <label
-                  htmlFor="confirmPassword"
-                  className="text-sm font-medium leading-none"
-                >
-                  Confirm Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                  <input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type="password"
-                    autoComplete="new-password"
-                    placeholder="Confirm your password"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    required
-                    className="flex h-10 w-full rounded-md border border-gray-300 bg-background px-3 py-2 text-sm pl-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  />
-                </div>
-              </div>
+             <div className="space-y-2">
+  <label
+    htmlFor="confirmPassword"
+    className="text-sm font-medium leading-none"
+  >
+    Confirm Password
+  </label>
+  <div className="relative">
+    <Lock className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+    <input
+      id="confirmPassword"
+      name="confirmPassword"
+      type={showConfirmPassword ? "text" : "password"}
+      autoComplete="new-password"
+      placeholder="Confirm your password"
+      value={formData.confirmPassword}
+      onChange={handleChange}
+      required
+      className="flex h-10 w-full rounded-md border border-gray-300 bg-background px-3 py-2 text-sm pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+    />
+    {/* Toggle show/hide */}
+    <button
+      type="button"
+      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+      className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+    >
+      {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+    </button>
+   
+  </div>
+</div>
 
               {/* Terms Checkbox */}
               <div className="flex items-center space-x-2">

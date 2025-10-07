@@ -34,7 +34,7 @@ const ProfilePage = () => {
     name ? name.charAt(0).toUpperCase() : "?";
 
   return (
-    <div className="flex items-center justify-center bg-gray-50    mt-16 ">
+    <div className="flex items-center justify-center bg-gray-50  sm:mt-17 mt-10 ">
       <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-6 text-center">
         {/* Avatar */}
         <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-r from-emerald-500 to-blue-500 flex items-center justify-center text-white text-3xl font-bold shadow-md">

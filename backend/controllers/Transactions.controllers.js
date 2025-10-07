@@ -49,7 +49,7 @@ const createTransaction = AsyncHandler(async (req, res) => {
 const getAllTransactions = AsyncHandler(async (req, res) => {
   const userId = req.user.id;
 
-  // console.log("user is in getall ", userId);
+ 
 
   const { category, startDate, endDate } = req.query;
 
@@ -68,12 +68,12 @@ const getAllTransactions = AsyncHandler(async (req, res) => {
     };
   }
 
-  // console.log("query obj is ", QueryObj);
+
 
   const Transactions = await TransactionModel.find(QueryObj).sort({
     transactionDate: -1,
   });
-  // console.log("transactions is ", Transactions);
+  
 
   if (!Transactions) {
     throw new ApiError(400, "invalid credentials");
@@ -105,7 +105,7 @@ const getTransactionById = AsyncHandler(async (req, res) => {
     throw new ApiError(400, "invalid params, no Transaction id coming");
   }
 
-  // console.log("is valid id ", mongoose.Types.ObjectId.isValid(id));
+  
 
   const Transaction = await TransactionModel.findOne({
     _id: id,
@@ -149,7 +149,7 @@ const updateTransaction = AsyncHandler(async (req, res) => {
     throw new ApiError(400, "Amount must be greater than 0 ");
   }
 
-  // console.log("transactionType is", transactionType);
+ 
 
   if (transactionType !== "income" && transactionType !== "expense") {
     throw new ApiError(400, "Transaction type must be income or expense");
@@ -184,7 +184,7 @@ const updateTransaction = AsyncHandler(async (req, res) => {
     delete updateFields.transactionDate; // empty string ignore karo
   }
 
-  // console.log("updateFields are", updateFields);
+
 
   const updatedTransaction = await TransactionModel.findOneAndUpdate(
     { _id: id, userId: userId },
@@ -233,7 +233,7 @@ const deleteTransaction = AsyncHandler(async (req, res) => {
 
 const getTransactionSummary = AsyncHandler(async (req, res) => {
   const userId = req.user.id;
-  // console.log("userId is", userId);
+
 
   if (!userId) {
     throw new ApiError(400, "User not authorized");
@@ -255,7 +255,7 @@ const getTransactionSummary = AsyncHandler(async (req, res) => {
     };
   }
 
-  // console.log("match query is ", matchQuery);
+
 
   // ----- Step 1: Aggregate total income & total expense -----
 
@@ -279,14 +279,13 @@ const getTransactionSummary = AsyncHandler(async (req, res) => {
   let totalIncome = 0;
   let totalExpense = 0;
 
-  // console.log("totals are", totals);
-
+  
   totals.forEach((item) => {
     if (item._id === "income") {
-      // console.log("total income is", item.totalAmount);
+      
       totalIncome = item.totalAmount;
     } else if (item._id === "expense") {
-      // console.log("total expense is", item.totalAmount);
+      
       totalExpense = item.totalAmount;
     }
   });
@@ -294,7 +293,7 @@ const getTransactionSummary = AsyncHandler(async (req, res) => {
   // Calculate balance
 
   let balance = totalIncome - totalExpense;
-  // console.log("balance is", balance);
+  
 
   // ----- Step 2: Aggregate category-wise totals -----
   const categoryWiseData = await TransactionModel.aggregate([
@@ -314,7 +313,7 @@ const getTransactionSummary = AsyncHandler(async (req, res) => {
     return acc;
   }, {});
 
-  // console.log("category wise data is", categoryWise);
+  
 
   // send response
 
@@ -335,13 +334,13 @@ const getTransactionSummary = AsyncHandler(async (req, res) => {
 const getAllRecentTransactions = AsyncHandler(async (req, res) => {
   const last24Hours = new Date(Date.now() - 24 * 60 * 60 * 1000);
    const userId = req.user.id;
-  // console.log("userId is", userId);
+  
 
   if (!userId) {
     throw new ApiError(400, "User not authorized");
   }
   
-  console.log("recent calll");
+
   
 
   const recentTransactions = await TransactionModel.find({
@@ -349,7 +348,7 @@ const getAllRecentTransactions = AsyncHandler(async (req, res) => {
     createdAt: { $gte: last24Hours },
   }).sort({ createdAt: -1 });
 
-  console.log("recent Transactions is ", recentTransactions);
+  
 
   return res
     .status(201)

@@ -61,7 +61,7 @@ export default function AddTransaction({ isEdit }) {
     setTimeout(() => {
       setShowSuccess(false);
       goBack();
-    }, 2000);
+    }, 1500);
   };
 
   const goBack = () => {

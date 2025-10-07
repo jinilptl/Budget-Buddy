@@ -347,7 +347,7 @@ export default function Analytics() {
         /* Charts */
         <div className="space-y-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <div>
+           {incomeData.length>0 ? ( <div>
               <h2 className="text-xl font-semibold mb-4">Income Categories</h2>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
@@ -369,9 +369,11 @@ export default function Analytics() {
                   <Legend verticalAlign="bottom" height={36} />
                 </PieChart>
               </ResponsiveContainer>
-            </div>
+            </div>):(<div className="flex items-center justify-center h-full">
+            <h2 className="text-xl font-semibold mb-4 sm:mt-0 mt-5 text-gray-500">No Income Transactions available .<span className=" inline-block"> pie chart show after adding one transactions</span></h2>
+          </div>)}
 
-            <div>
+           {expenseData.length>0 ? ( <div>
               <h2 className="text-xl font-semibold mb-4">Expense Categories</h2>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
@@ -393,7 +395,9 @@ export default function Analytics() {
                   <Legend verticalAlign="bottom" height={36} />
                 </PieChart>
               </ResponsiveContainer>
-            </div>
+            </div>):(<div className="flex items-center justify-center h-full sm:mt-0 mt-5">
+            <h2 className="text-xl font-semibold mb-4 text-gray-500">No Expense Transactions available .<span className=" inline-block"> pie chart show after adding one transactions</span></h2>
+          </div>)}
           </div>
 
           <div className="pt-8">
