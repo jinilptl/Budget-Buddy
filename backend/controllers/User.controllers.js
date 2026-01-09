@@ -273,7 +273,6 @@ export const changePassword = AsyncHandler(async (req, res) => {
     });
   } catch (error) {
     console.error("Email Error:", error.response ? error.response.body : error);
-    // We won’t rollback password if email fails (since password change is primary)
   }
 
   return res
