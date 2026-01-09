@@ -10,8 +10,7 @@ import "dotenv/config"
 
 export const register = AsyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
-    console.log(`name is ${name} with email is ${email} with this password ${password}`);
-  
+
 
   let trimeName=name.trim()
   // check fields
@@ -90,9 +89,9 @@ const message = `
 
 export const login = AsyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  console.log(`email is ${email} with this password ${password}`);
 
-  // check fields
+console.log(`email is ${email} with this password ${password}`);
+
   if (!email || !password) {
     throw new ApiError(400, "Email and password are required");
   }
