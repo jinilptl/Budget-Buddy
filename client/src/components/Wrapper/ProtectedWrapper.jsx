@@ -1,23 +1,30 @@
-import React, { use, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { Navigate } from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
 
-const ProtectedWrapper = ({children}) => {
-  const navigate = useNavigate();
+const ProtectedWrapper = ({ children }) => {
+  const token = localStorage.getItem("token");
 
-  let token=localStorage.getItem('token')
-  // console.log("protected call");
-  
+  if (!token) {
+    console.log("❌ No token — redirecting to login");
+    return <Navigate to="/" replace />;
+  }
 
-  useEffect(()=>{
-    if(!token){
-      console.log("no token, redirecting to login");
-      
-      navigate('/')
+  try {
+    const decoded = jwtDecode(token);
+    if (decoded.exp * 1000 < Date.now()) {
+      console.log("⚠️ Token expired — redirecting to login");
+      localStorage.removeItem("token");
+      return <Navigate to="/" replace />; 
     }
-  },[token])
-  return (
-    children
-  )
-}
+  } catch (err) {
+    console.error("Invalid token — redirecting to login");
+    localStorage.removeItem("token");
+    return <Navigate to="/" replace />;
+  }
 
-export default ProtectedWrapper
+  // ✅ Only render protected component if token is valid
+  return children;
+};
+
+export default ProtectedWrapper;
