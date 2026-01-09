@@ -326,7 +326,7 @@ const getTransactionSummary = AsyncHandler(async (req, res) => {
         balance,
         categoryWise,
       },
-      "Transaction summary fetched successfully"
+      "Transaction summary fetched  successfully"
     )
   );
 });

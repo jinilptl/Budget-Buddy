@@ -10,7 +10,7 @@ import "dotenv/config"
 
 export const register = AsyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
-  console.log(`name is ${name} with email is ${email} with this password ${password}`);
+
 
   let trimeName=name.trim()
   // check fields
@@ -89,8 +89,9 @@ const message = `
 
 export const login = AsyncHandler(async (req, res) => {
   const { email, password } = req.body;
+
 console.log(`email is ${email} with this password ${password}`);
-  // check fields
+
   if (!email || !password) {
     throw new ApiError(400, "Email and password are required");
   }
@@ -271,7 +272,6 @@ export const changePassword = AsyncHandler(async (req, res) => {
     });
   } catch (error) {
     console.error("Email Error:", error.response ? error.response.body : error);
-    // We won’t rollback password if email fails (since password change is primary)
   }
 
   return res
